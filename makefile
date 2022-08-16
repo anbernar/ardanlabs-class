@@ -40,6 +40,17 @@ kind-load:
 kind-apply:
 	kustomize build zarf/k8s/kind/sales-pod | kubectl apply -f -
 
+kind-status:
+	kubectl get nodes -o wide
+	kubectl get svc -o wide
+	kubectl get pods -o wide --watch --all-namespaces
+
+kind-status-sales:
+	kubectl get pods -o wide --watch --namespace=sales-system
+
+kind-logs-sales:
+	kubectl logs -l app=sales --all-containers=true -f --tail=100 | go run app/tooling/logfmt/main.go -service=SALES-API
+
 	
 # ==============================================================================
 # Local support
