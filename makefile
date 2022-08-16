@@ -2,6 +2,8 @@
 # go install github.com/divan/expvarmon@latest
 # expvarmon -ports=":4000" -vars="build,requests,goroutines,errors,panics,mem:memstats.Alloc"
 
+# curl -il http://localhost:3000/test
+
 # ==============================================================================
 # Building containers
 
