@@ -2,33 +2,23 @@
 package handlers
 
 import (
-	"encoding/json"
 	"expvar"
 	"net/http"
 	"net/http/pprof"
 	"os"
 
-	"github.com/dimfeld/httptreemux/v5"
+	"github.com/ardanlabs/service/business/web/mid"
+	"github.com/ardanlabs/service/foundation/web"
 	"go.uber.org/zap"
 )
 
 // APIMux constructs a http.Handler with all application routes defined.
-func APIMux(shutdown chan os.Signal, log *zap.SugaredLogger) *httptreemux.ContextMux {
-	mux := httptreemux.NewContextMux()
+func APIMux(shutdown chan os.Signal, log *zap.SugaredLogger) *web.App {
+	app := web.NewApp(shutdown, mid.Logger(log))
 
-	h := func(w http.ResponseWriter, r *http.Request) {
-		status := struct {
-			Status string
-		}{
-			Status: "OK",
-		}
+	app.Handle(http.MethodGet, "/test", test)
 
-		json.NewEncoder(w).Encode(status)
-	}
-
-	mux.Handle(http.MethodGet, "/test", h)
-
-	return mux
+	return app
 }
 
 // DebugStandardLibraryMux registers all the debug routes from the standard library
