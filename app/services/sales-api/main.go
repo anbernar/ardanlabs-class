@@ -11,6 +11,8 @@ import (
 	"go.uber.org/zap"
 )
 
+var build = "develop"
+
 func main() {
 
 	// Construct the application logger.
@@ -30,7 +32,7 @@ func main() {
 }
 
 func run(log *zap.SugaredLogger) error {
-	log.Infow("startup", "GOMAXPROCS", runtime.GOMAXPROCS(0))
+	log.Infow("startup", "GOMAXPROCS", runtime.GOMAXPROCS(0), "build", build)
 	defer log.Infow("down")
 
 	shutdown := make(chan os.Signal, 1)
